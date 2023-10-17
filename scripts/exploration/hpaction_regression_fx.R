@@ -44,7 +44,7 @@ hpaction_logit_runner <- function(equalized_data, outcome, explanatory, return_m
 harass_predictor <- function(all_data, logit, equalized_data){
   
   # Predict values of remaining properties with F harassOccurred values
-  remaining_harassF <- equalized_data |>
+  remaining_harassF <- all_data |>
     filter(!(bbl %in% equalized_data$bbl))
   probabilities_remaining_harassF <- logit |>
     predict(remaining_harassF, type = "response", se.fit = T) |>
@@ -52,7 +52,8 @@ harass_predictor <- function(all_data, logit, equalized_data){
     dplyr::select(harassmentIndex = fit, error = se.fit)
 
   ## Join probabilities back to remaining properties dataset
-  predicted_probabilities <- remaining_harassF
+  predicted_probabilities <- st_as_sf(remaining_harassF) |>
+    st_transform(2263)
   predicted_probabilities$harassmentIndex <- probabilities_remaining_harassF$harassmentIndex
   predicted_probabilities$indexError <- probabilities_remaining_harassF$error
 

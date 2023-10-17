@@ -21,6 +21,8 @@ rentburden_raw <- get_acs(geography = "tract",
 
 ## Calculate rent burden percentage as a decimal
 rentburden_clean <- rentburden_raw |> 
-  mutate(percRentBurden = (count30to35E + count35to40E + count40to50E + count50plusE)/totalE) |> 
-  select(NAME, percRentBurden) |> 
+  mutate(across(c(count30to35E, count35to40E, count40to50E, count50plusE, totalE), ~ replace_na(.x, 0)),
+         percRentBurden = (count30to35E + count35to40E + count40to50E + count50plusE)/totalE,
+         percRentBurden = if_else(is.na(percRentBurden), 0, percRentBurden)) |>
+  dplyr::select(NAME, percRentBurden) |> 
   st_transform(2263)

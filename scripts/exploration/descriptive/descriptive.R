@@ -4,9 +4,6 @@ library(ggplot2)
 
 ## PURPOSE: Generate basic summary statistics for all explanatory variables
 
-## Create a list of all explanatory variable column names
-varnames <- c("unitsRes", "evictions", "dohmh", "ecb", "hmcomplaints", "shareRS", "nypd311", "arrests", "percPOC", "percRentBurden")
-
 ## Generate a dataframe of means and sds of all explanatory variables from the full dataset
 allvars_descriptive <- data.frame(variable = varnames,
                                   nonzero_properties = rep(0, length(varnames)),
@@ -76,7 +73,7 @@ sqrtvars_correlations_eq <- lots2023_allvars_equalized[,names(lots2023_allvars_e
   round(3)
 
 ## Generate scatterplots for the bounded explanatory variables from the full dataset
-varnames_bounded <- paste(varnames, "_bounded", sep = "")
+varnames_bounded <- c(paste(discrete_vars, "_bounded", sep = ""), "shareRS", "percPOC", "percRentBurden")
 boundedvars_correlations <- lots2023_allvars[,names(lots2023_allvars) %in% c(varnames_bounded, "harassOccurred")] |> 
   st_drop_geometry() |> 
   as.matrix() |> 

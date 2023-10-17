@@ -36,6 +36,28 @@ hpaction_logit_runner(equalized_data = lots2023_allvars_equalized,
                       outcome = "harassOccurred",
                       explanatory = c("evictions_bounded", "shareRS_bounded", "dohmh_bounded", "ecb_bounded", "nypd311_bounded", "arrests_bounded", "percPOC_bounded", "percRentBurden_bounded", "unitsRes_bounded", "hmcomplaints_bounded")) ## R-squared = .706, Accuracy = 91.0%
 
+## Run regression using bounded variables with non-equalized dataset
+hpaction_logit_runner(equalized_data = lots2023_allvars,
+                      outcome = "harassOccurred",
+                      explanatory = c(
+                                      "evictions_bounded",
+                                      "shareRS_bounded",
+                                      "dohmh_bounded",
+                                      "ecb_bounded",
+                                      "nypd311_bounded",
+                                      "arrests_bounded",
+                                      "percPOC_bounded",
+                                      "percRentBurden_bounded",
+                                      "unitsRes_bounded",
+                                      "hmcomplaints_bounded"
+                                      )
+                      )
+
+## Run regression using bounded variables sans hmc complaints
+hpaction_logit_runner(equalized_data = lots2023_allvars_equalized,
+                      outcome = "harassOccurred",
+                      explanatory = c("evictions_bounded", "shareRS_bounded", "dohmh_bounded", "ecb_bounded", "nypd311_bounded", "arrests_bounded", "percPOC_bounded", "percRentBurden_bounded", "unitsRes_bounded"))
+
 ## Generate predictions from lots2023_allvars_equalized model
 allvars_model <- hpaction_logit_runner(equalized_data = lots2023_allvars_equalized,
                                        outcome = "harassOccurred",

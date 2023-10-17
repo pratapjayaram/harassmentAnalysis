@@ -15,7 +15,7 @@ hpactions_response <- read.socrata(hpaction_request)
 ## Apply filters for case type, harassment finding, and case status
 hpactions_cleaned <- hpactions_response |> 
   filter(casetype %in% c("Tenant Action/Harrassment", "Heat and Hot Water", "Tenant Action"),
-         findingofharassment != "No Harassment",
+         # findingofharassment != "No Harassment",
          casestatus == "CLOSED")
 
 ## Create summary dataframe

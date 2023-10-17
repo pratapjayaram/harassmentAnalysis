@@ -3,6 +3,10 @@ library(sf)
 
 ## PURPOSE: Join together all lot, block, and census tract data into a single dataframe
 
+## Create a list of all explanatory variable column names
+varnames <- c("unitsRes", "evictions", "dohmh", "ecb", "hmcomplaints", "shareRS", "nypd311", "arrests", "percPOC", "percRentBurden")
+discrete_vars <- c("unitsRes", "evictions", "dohmh", "ecb", "hmcomplaints", "nypd311", "arrests")
+
 ## Join dataframes together
 lots2023_allvars <- plutolots_2023 |> 
   left_join(lots2023_lotvars, by = "bbl") |>
@@ -60,10 +64,10 @@ bounds <- allvars_descriptive |>
   mutate(upper_bound = mean + 3*sd) |> 
   dplyr::select(variable, upper_bound) |> 
   pivot_wider(names_from = variable, values_from = upper_bound)
-for (i in 1:length(varnames)){
-  boundvar_name <- paste(varnames[i], "_bounded", sep = "")
-  lots2023_allvars[[boundvar_name]] <- if_else(lots2023_allvars[[varnames[i]]] > bounds[[varnames[i]]],
-                                               bounds[[varnames[i]]],
-                                               lots2023_allvars[[varnames[i]]])
+for (i in 1:length(discrete_vars)){
+  boundvar_name <- paste(discrete_vars[i], "_bounded", sep = "")
+  lots2023_allvars[[boundvar_name]] <- if_else(lots2023_allvars[[discrete_vars[i]]] > bounds[[discrete_vars[i]]],
+                                               bounds[[discrete_vars[i]]],
+                                               lots2023_allvars[[discrete_vars[i]]])
 }
 
